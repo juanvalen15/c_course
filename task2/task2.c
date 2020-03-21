@@ -3,7 +3,8 @@
 #include <stdlib.h>
 
 extern int random_number_generator(int seed);
-int create_list_of_numbers();
+extern int create_list_of_numbers();
+extern int add_number_to_list(int number);
 
 struct num_and_string
 {
@@ -64,6 +65,7 @@ int create_list_of_numbers()
 	int i, len, random_number;
 	char filename[20];
 	FILE *fp;
+	struct num_and_string *temp_node;
 
 	for ( i=0; i<10; i++)
 	{
@@ -72,7 +74,6 @@ int create_list_of_numbers()
 		filename[len] = '0' + i;
 		filename[len+1] = '\0';
 		strcat(filename, ".txt");
-		printf("filename = %s\n", filename);
 
 		fp = fopen(filename, "r");
 		if ( fp == NULL )
@@ -81,8 +82,21 @@ int create_list_of_numbers()
 			return 1;
 		}
 		fscanf(fp, "%d", &random_number);
+		printf("filename = %s number = %d\n", filename, random_number);
+		add_number_to_list(random_number); 
+
 		fclose(fp);
 	}
+
+	temp_node = ns_list;
+
+	while( temp_node != NULL)
+	{
+		printf("list member: number: %d\n", temp_node->number);
+		temp_node = temp_node->next;
+	}
+
+	return 0;
 }
 
 int add_number_to_list(int number)
